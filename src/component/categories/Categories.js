@@ -9,6 +9,8 @@ const Categories = () => {
    const dispatch=useDispatch();
    useEffect(()=>{
     getCategoriesAxios(setCategories)
+   
+  
    },[])
     return(<>
    
