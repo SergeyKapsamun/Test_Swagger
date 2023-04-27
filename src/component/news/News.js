@@ -1,14 +1,31 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import {  Outlet } from 'react-router-dom';
-import ItemNews from '../itemNews/ItemNews';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useParams } from "react-router-dom";
+import ItemNews from "../itemNews/ItemNews";
+import { getNewsSlice } from "../../redux/reduxSlice/newsSlice";
 export const News = () => {
+  const { news, isNews } = useSelector((state) => state.news);
+  const dispatch = useDispatch();
+  const { idNews } = useParams();
 
-    const news=useSelector(state=>state.news.newsArray)
+  useEffect(() => {
+    if (idNews) {
+      dispatch(getNewsSlice(idNews));
+    }
+  }, [idNews]);
 
-    return(<> <Outlet/>
-{
-    news?.map((elemNew)=><ItemNews key={elemNew.id} id={elemNew.id} title={elemNew.title} description={elemNew.shortDescription}/>)
-}
-    </>);
+  return (
+    <>
+      <Outlet />
+      {isNews ? <div>Load...</div> : ""}
+      {news?.map((elemNew) => (
+        <ItemNews
+          key={elemNew.id}
+          id={elemNew.id}
+          title={elemNew.title}
+          description={elemNew.shortDescription}
+        />
+      ))}
+    </>
+  );
 };

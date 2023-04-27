@@ -1,34 +1,38 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
-
-export const getNewsSlice = createAsyncThunk("categories/getCategories", async (id,{rejectWithValue, dispatch}) => {
-    const response = await axios.get(`https://testtask.sebbia.com/v1/news/categories/${id}/news`);
-    console.log(response.data.list)
-    dispatch(addNews(response.data.list))
-   
-  })
-
-
-export const newsSlice = createSlice({
-  name: 'news',
-  initialState: {
-    newsArray:[],
-  },
-  reducers: {
-   addNews:(state, action)=>{
-state.newsArray=action.payload;
-   },
-
-  },
-  extraReducers:{
-    [getNewsSlice.fulfilled]:()=>console.log('Fulfield'),
-    [getNewsSlice.pending]:()=>console.log('pending'),
-    [getNewsSlice.rejected]:()=>console.log('rejected')
+export const getNewsSlice = createAsyncThunk(
+  "categories/getCategories",
+  async (id, { rejectWithValue, dispatch }) => {
+    const response = await axios.get(
+      `https://testtask.sebbia.com/v1/news/categories/${id}/news`
+    );
+    dispatch(addNews(response.data.list));
   }
-})
+);
+const initialState = {
+  news: [],
+  isNews: false,
+};
+export const newsSlice = createSlice({
+  name: "news",
+  initialState: initialState,
+  reducers: {
+    addNews: (state, action) => {
+      state.news = action.payload;
+    },
+  },
+  extraReducers: {
+    [getNewsSlice.fulfilled]: (state) => {
+      state.isNews = false;
+    },
+    [getNewsSlice.pending]: (state) => {
+      state.isNews = true;
+    },
+    [getNewsSlice.rejected]: () => console.log("rejected"),
+  },
+});
 
+export const { addNews } = newsSlice.actions;
 
-export const { addNews} = newsSlice.actions
-
-export default newsSlice.reducer
+export default newsSlice.reducer;
