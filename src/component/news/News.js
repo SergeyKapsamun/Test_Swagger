@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useParams } from "react-router-dom";
-import ItemNews from "../itemNews/ItemNews";
+import ItemNews from "../ItemNews/ItemNews";
 import { getNewsSlice } from "../../redux/reduxSlice/newsSlice";
 export const News = () => {
   const { news, isNews } = useSelector((state) => state.news);

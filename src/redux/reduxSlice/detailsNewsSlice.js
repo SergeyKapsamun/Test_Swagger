@@ -8,17 +8,21 @@ export const getDetailsNewsSlice = createAsyncThunk(
     const response = await axios.get(
       `https://testtask.sebbia.com/v1/news/details?id=${id}`
     );
-    if (response.data.news == undefined) {
-      console.log(response.data.news);
-      <Navigate to="/" />;
-    }
-    console.log(response.data);
-    // dispatch(addNewsDetails(response.data.news));
+   console.log(response.status)
+if(response.data.code===0){
+  dispatch(error(false))
+  dispatch(addNewsDetails(response.data.news));
+} else{  
+  dispatch(error(true))
+}
+  
+   
   }
 );
 const initialState = {
   newsDetails: [],
   isNewsDetails: false,
+  errorReques:false,
 };
 export const newsDetailsSlice = createSlice({
   name: "details",
@@ -27,6 +31,9 @@ export const newsDetailsSlice = createSlice({
     addNewsDetails: (state, action) => {
       state.newsDetails = action.payload;
     },
+    error:(state, action)=>{
+      state.errorReques=action.payload;
+    }
   },
   extraReducers: {
     [getDetailsNewsSlice.fulfilled]: (state) => {
@@ -36,12 +43,12 @@ export const newsDetailsSlice = createSlice({
       state.isNewsDetails = false;
     },
     [getDetailsNewsSlice.rejected]: () => {
-      console.log("lox");
-      redirect("/");
+    error(true)
+    
     },
   },
 });
 
-export const { addNewsDetails } = newsDetailsSlice.actions;
+export const { addNewsDetails,error } = newsDetailsSlice.actions;
 
 export default newsDetailsSlice.reducer;

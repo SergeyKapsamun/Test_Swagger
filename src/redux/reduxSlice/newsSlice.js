@@ -8,6 +8,7 @@ export const getNewsSlice = createAsyncThunk(
       `https://testtask.sebbia.com/v1/news/categories/${id}/news`
     );
     dispatch(addNews(response.data.list));
+    console.log(response.data)
   }
 );
 const initialState = {
