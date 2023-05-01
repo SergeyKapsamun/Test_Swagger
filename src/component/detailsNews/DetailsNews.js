@@ -4,7 +4,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { getDetailsNewsSlice } from "../../redux/reduxSlice/detailsNewsSlice";
 const DetailsNews = () => {
   const { newsDetails, isNewsDetails, errorReques } = useSelector(
-    state => state.detailsNews
+    (state) => state.detailsNews
   );
   const dispatch = useDispatch();
   const { idDetails, id } = useParams();
@@ -12,24 +12,25 @@ const DetailsNews = () => {
     if (idDetails) {
       dispatch(getDetailsNewsSlice(idDetails));
     }
-  
   }, [idDetails]);
   console.log(errorReques);
   return (
     <>
-    {errorReques? <Navigate to='/error'/>:isNewsDetails ? (
+      {errorReques ? (
+        <Navigate to="/error" />
+      ) : isNewsDetails ? (
         <div>
-         
           <p>title: {newsDetails.title}</p>
           <div
             dangerouslySetInnerHTML={{ __html: newsDetails.fullDescription }}
-          /> 
-          <Link to={'/'+id+'/news'} style={{background:'green'}}>Вернуться назад</Link>
+          />
+          <Link to={"/" + id + "/news"} style={{ background: "green" }}>
+            Вернуться назад
+          </Link>
         </div>
       ) : (
         ""
       )}
-      
     </>
   );
 };
